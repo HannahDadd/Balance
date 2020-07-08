@@ -12,7 +12,9 @@ struct ContentView: View {
     private var eventCalendarManager: EventsCalendarManager = EventsCalendarManager()
     var body: some View {
         HStack {
-            Button(action: {}) {
+            Button(action: {
+                self.eventCalendarManager.authWithCalendar()
+            }) {
                 Text("Hit me")
             }
         }
