@@ -9,8 +9,13 @@
 import SwiftUI
 
 struct ContentView: View {
+    private var eventCalendarManager: EventsCalendarManager = EventsCalendarManager()
     var body: some View {
-        Text("Hello, World!")
+        HStack {
+            Button(action: {}) {
+                Text("Hit me")
+            }
+        }
     }
 }
 
