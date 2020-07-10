@@ -10,12 +10,18 @@ import SwiftUI
 
 struct ContentView: View {
     private var eventCalendarManager: EventsCalendarManager = EventsCalendarManager()
+
+    @State var events : [Event] = []
+
     var body: some View {
-        HStack {
+        VStack {
             Button(action: {
-                self.eventCalendarManager.authWithCalendar()
+                self.events = self.eventCalendarManager.authWithCalendar()
             }) {
                 Text("Hit me")
+            }
+            List(events) { event in
+                EventView(event: event)
             }
         }
     }
