@@ -11,13 +11,11 @@ import Foundation
 import EventKit
 import EventKitUI
 
-
 enum CustomError: Error {
     case calendarAccessDeniedOrRestricted
     case eventNotAddedToCalendar
     case eventAlreadyExistsInCalendar
 }
-
 
 typealias EventsCalendarManagerResponse = (_ result: Result<Bool, CustomError>) -> Void
 
@@ -39,12 +37,12 @@ class EventsCalendarManager: NSObject {
         return EKEventStore.authorizationStatus(for: EKEntityType.event)
     }
     
-    func authWithCalendar() {
+    func authWithCalendar() -> [Event] {
         let authStatus = getAuthorizationStatus()
         switch authStatus {
         case .authorized:
             print("yay I'm in")
-            getAllEvents()
+            return getTodaysEvents()
         case .notDetermined:
             //Auth is not determined
             //We should request access to the calendar
@@ -58,25 +56,21 @@ class EventsCalendarManager: NSObject {
         default:
             print("Complete failure.")
         }
+        return []
     }
     
-    func getAllEvents() {
+    private func getTodaysEvents() -> [Event] {
         let calendars = eventStore.calendars(for: .event)
         for calendar in calendars {
-            let start = Calendar.current.date(byAdding: DateComponents(day: -10), to: NSDate() as Date)!
-            print("Start: " + start.description)
-            let end = Calendar.current.date(byAdding: DateComponents(day: 10), to: start)!
-            print("End: " + end.description)
+            let start = Calendar.current.date(byAdding: DateComponents(day: 0), to: NSDate() as Date)!
+            let end = Calendar.current.date(byAdding: DateComponents(day: 1), to: start)!
             let predicate = eventStore.predicateForEvents(
                 withStart: start,
                 end: end,
                 calendars: [calendar])
-            print("Quantity: " + eventStore.events(matching: predicate).count.description)
-            for event in eventStore.events(matching: predicate){
-                //eventStore.enumerateEvents(matching: predicate){ (event, stop) in
-                print("Event: " + event.title + event.startDate.description)
-            }
+            return eventStore.events(matching: predicate).map { Event(eventName: $0.title) }
         }
+        return []
     }
     
 }
