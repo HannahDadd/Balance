@@ -19,10 +19,13 @@ struct EventView: View {
 
     var body: some View {
         HStack {
+            Spacer().frame(width: 10)
             VStack {
                 Text(formatter.string(from: event.startDate)).font(.caption)
                 Text(formatter.string(from: event.endDate)).font(.caption)
             }
+            Spacer().frame(width: 30)
+            Divider()
             Text(event.eventName)
         }
     }
