@@ -10,12 +10,20 @@ import SwiftUI
 
 struct EventView: View {
     private let event : Event
+    let formatter = DateFormatter()
 
     init(event: Event) {
         self.event = event
+        formatter.dateFormat = "hh:mm"
     }
 
     var body: some View {
-        Text(event.eventName)
+        HStack {
+            VStack {
+                Text(formatter.string(from: event.startDate)).font(.caption)
+                Text(formatter.string(from: event.endDate)).font(.caption)
+            }
+            Text(event.eventName)
+        }
     }
 }

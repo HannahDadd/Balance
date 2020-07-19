@@ -61,6 +61,7 @@ class EventsCalendarManager: NSObject {
     
     private func getTodaysEvents() -> [Event] {
         let calendars = eventStore.calendars(for: .event)
+        var events : [Event] = []
         for calendar in calendars {
             let start = Calendar.current.date(byAdding: DateComponents(day: 0), to: NSDate() as Date)!
             let end = Calendar.current.date(byAdding: DateComponents(day: 1), to: start)!
@@ -68,9 +69,9 @@ class EventsCalendarManager: NSObject {
                 withStart: start,
                 end: end,
                 calendars: [calendar])
-            return eventStore.events(matching: predicate).map { Event(eventName: $0.title) }
+            events.append(contentsOf: eventStore.events(matching: predicate).map { Event(eventName: $0.title, endDate: $0.endDate, startDate: $0.startDate) })
         }
-        return []
+        return events
     }
     
 }

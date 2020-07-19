@@ -11,8 +11,12 @@ import Foundation
 class Event: Identifiable {
     let id = UUID()
     let eventName : String
+    let startDate : Date
+    let endDate : Date
 
-    init(eventName: String) {
+    init(eventName: String, endDate: Date, startDate: Date) {
         self.eventName = eventName
+        self.startDate = startDate
+        self.endDate = endDate
     }
 }
