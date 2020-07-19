@@ -14,15 +14,10 @@ struct ContentView: View {
     @State var events : [Event] = []
 
     var body: some View {
-        VStack {
-            Button(action: {
-                self.events = self.eventCalendarManager.authWithCalendar()
-            }) {
-                Text("Hit me")
-            }
-            List(events) { event in
-                EventView(event: event)
-            }
+        List(events) { event in
+            EventView(event: event)
+        }.onAppear {
+            self.events = self.eventCalendarManager.authWithCalendar()
         }
     }
 }
